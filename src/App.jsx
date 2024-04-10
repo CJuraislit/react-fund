@@ -4,6 +4,8 @@ import ClassCounter from "./components/ClassCounter";
 import "./styles/App.css";
 import PostItem from "./components/PostItem";
 import PostList from "./components/PostList";
+import MyButton from "./components/UI/button/MyButton";
+import MyInput from "./components/UI/input/MyInput";
 
 function App() {
   const [posts, setPosts] = useState([
@@ -21,6 +23,11 @@ function App() {
   return (
     <>
       <div className="App">
+        <form action="">
+          <MyInput value={title} type="text" placeholder="Название поста" />
+          <MyInput type="text" placeholder="Описание поста" />
+          <MyButton onClick={addNewPost}>Создать пост</MyButton>
+        </form>
         <PostList posts={posts} title={"Посты про JS"} />
         <PostList posts={posts2} title={"Посты про Python"} />
       </div>
