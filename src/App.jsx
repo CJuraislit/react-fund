@@ -14,25 +14,15 @@ function App() {
     { id: 3, title: "JavaScript 3", body: "Description" },
   ]);
 
-  const [posts2, setPosts2] = useState([
-    { id: 1, title: "Python 1", body: "Description" },
-    { id: 2, title: "Python 2", body: "Description" },
-    { id: 3, title: "Python 3", body: "Description" },
-  ]);
-
+  const [post, setPost] = useState({ title: "", body: "" });
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
   const addNewPost = (e) => {
     e.preventDefault();
-    const newPost = {
-      id: Date.now(),
-      title,
-      body,
-    };
-    setPosts([...posts, newPost]);
-    setTitle("");
-    setBody(" ");
+
+    setPosts([...posts, { ...post, id: Date.now() }]);
+    setPost({ title: "", body: "" });
   };
 
   return (
@@ -41,22 +31,21 @@ function App() {
         <form action="">
           {/* Управляемый компонент */}
           <MyInput
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={post.title}
+            onChange={(e) => setPost({ ...post, title: e.target.value })}
             type="text"
             placeholder="Название поста"
           />
           {/* Неуправляемый\Неконтролируемый компонет */}
           <MyInput
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
+            value={post.body}
+            onChange={(e) => setPost({ ...post, body: e.target.value })}
             type="text"
             placeholder="Описание поста"
           />
           <MyButton onClick={addNewPost}>Создать пост</MyButton>
         </form>
         <PostList posts={posts} title={"Посты про JS"} />
-        <PostList posts={posts2} title={"Посты про Python"} />
       </div>
     </>
   );
