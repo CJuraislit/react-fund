@@ -6,7 +6,6 @@ const MyModal = ({ children, visible, setVisible }) => {
 
   if (visible) {
     rootClasses.push(classes.active);
-    console.log(rootClasses);
   }
 
   return (

@@ -13,6 +13,7 @@ const PostForm = ({ create }) => {
       ...post,
       id: Date.now(),
     };
+
     create(newPost);
     setPost({ title: "", body: "" });
   };
