@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Counter from "./components/Counter";
 import ClassCounter from "./components/ClassCounter";
 import "./styles/App.css";
@@ -11,14 +11,16 @@ import MySelect from "./components/UI/select/MySelect";
 import PostFilter from "./components/PostFilter";
 import MyModal from "./components/UI/MyModal/MyModal";
 import { usePosts } from "./hooks/usePosts";
+import axios from "axios";
+import PostService from "./API/PostsService";
+import Loader from "./components/UI/Loader/Loader";
 
 function App() {
   const [posts, setPosts] = useState([]);
-
   const [filter, setFilter] = useState({ sort: "", query: "" });
   const [modal, setModal] = useState(false);
-
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
+  const [isPostsLoading, setisPostsLoading] = useState(false);
 
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
@@ -27,6 +29,20 @@ function App() {
     setPosts([...posts, newPost]);
     setModal(false);
   };
+
+  useEffect(() => {
+    fetchPosts();
+  }, [filter]);
+
+  async function fetchPosts() {
+    setisPostsLoading(true);
+
+    setTimeout(async () => {
+      const posts = await PostService.getAll();
+      setPosts(posts);
+      setisPostsLoading(false);
+    }, 1000);
+  }
 
   // получаем пост из дочернего элемента
   const removePost = (post) => {
@@ -44,11 +60,23 @@ function App() {
         </MyModal>
         <hr style={{ margin: "15px 0 " }} />
         <PostFilter filter={filter} setFilter={setFilter} />
-        <PostList
-          remove={removePost}
-          posts={sortedAndSearchedPosts}
-          title={"Посты про JS"}
-        />
+        {isPostsLoading ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "50px",
+            }}
+          >
+            <Loader />
+          </div>
+        ) : (
+          <PostList
+            remove={removePost}
+            posts={sortedAndSearchedPosts}
+            title={"Посты про JS"}
+          />
+        )}
       </div>
     </>
   );
