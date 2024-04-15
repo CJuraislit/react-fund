@@ -11,7 +11,6 @@ const Navbar = () => {
         <Link to="/posts" className="navbar__link">
           Посты
         </Link>
-        z
       </div>
     </div>
   );
